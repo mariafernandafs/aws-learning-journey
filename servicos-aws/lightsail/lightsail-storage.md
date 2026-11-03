@@ -176,14 +176,45 @@ O filesystem, UUID e opções precisam corresponder ao volume real. Uma configur
 - **Amazon EBS:** armazenamento em bloco utilizado com instâncias EC2; conceito semelhante ao de discos adicionais do Lightsail.
 - **Amazon EC2:** oferece mais opções de configuração e controle de infraestrutura que o Lightsail.
 
-## 7. Perguntas de revisão
+
+## 7. Ciclo de vida do disco: Attach, Detach e Delete
+
+É importante diferenciar **desanexar** de **excluir** um disco no Lightsail.
+
+| Operação | O que acontece | Precisa formatar novamente? |
+|---|---|---|
+| **Attach** | Anexa um disco existente à instância | Não, se já possui filesystem |
+| **Detach** | Desanexa o disco, preservando seus dados | Não |
+| **Delete** | Exclui o disco e seus dados | Não é possível reanexá-lo |
+| **Criar disco vazio** | Provisiona um novo volume | Sim, para criar um filesystem |
+| **Restaurar snapshot** | Cria um disco com os dados do snapshot | Não |
+
+**Exemplo prático:**
+
+Se um disco com filesystem `ext4` for desanexado e depois anexado novamente, seus arquivos e sua estrutura de armazenamento permanecem preservados.
+
+Basta identificar o dispositivo e montá-lo, caso ainda não esteja montado:
+
+```bash
+lsblk -f
+sudo mount /dev/SEU_DISPOSITIVO /mnt/dados
+```
+
+**Boas práticas:**
+- Antes do detach, interromper gravações e desmontar o filesystem com `sudo umount /mnt/dados`.
+- Nunca executar `mkfs` em um disco que já contém dados que devem ser preservados.
+- Criar um snapshot antes de operações arriscadas.
+- Um disco adicional pode ser transferido entre instâncias compatíveis na mesma zona de disponibilidade.
+
+> **Resumo:** Attach/Detach controla a conexão do disco com a instância; Mount/Umount controla o acesso ao filesystem no Linux; Format cria o filesystem; Delete exclui o recurso de armazenamento.
+
+## Perguntas de revisão
 
 1. Por que não preciso formatar um bucket?
 2. Qual é a diferença entre **anexar** um volume e **montá-lo** no Linux?
 3. Por que `lsblk -f` deve ser executado antes de `mkfs.ext4`?
 4. Um disco novo precisa obrigatoriamente de partição?
-5. Qual opção escolheria para armazenar fotos de usuários? E para adicionar um diretório persistente à instância?
-
+5. Qual opção escolheria para armazenar fotos de usuários? E para adicionar um diretório persistente à instância 
 ## Referências oficiais
 
 - [Amazon Lightsail — documentação](https://docs.aws.amazon.com/lightsail/)
