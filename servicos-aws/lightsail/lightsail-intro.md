@@ -1,12 +1,9 @@
-# ☁️ Amazon Lightsail
+
+# Amazon Lightsail
 
 **Hospedagem simplificada na AWS: conceitos, recursos, armazenamento e comparações arquiteturais.**
 
-`AWS` · `Compute` · `Lightsail` · `EC2` · `Block Storage` · `Multicloud`
-
----
-
-## 📖 O que é Amazon Lightsail?
+## O que é Amazon Lightsail?
 
 O **Amazon Lightsail** é um serviço da AWS que reúne recursos de computação, armazenamento, rede e bancos de dados em uma plataforma simplificada, voltada principalmente à hospedagem de sites e aplicações.
 
@@ -16,9 +13,7 @@ Sua proposta é facilitar o provisionamento e o gerenciamento de recursos, com p
 
 Isso não significa que todos os componentes sejam totalmente gerenciados pela AWS ou que não existam cobranças adicionais.
 
----
-
-## 🧩 Principais recursos
+## Principais recursos
 
 | Recurso | Descrição |
 |---|---|
@@ -31,9 +26,7 @@ Isso não significa que todos os componentes sejam totalmente gerenciados pela A
 | **Snapshots** | Capturas do estado de determinados recursos, utilizadas para recuperação e criação de novos recursos. |
 | **CDN** | Distribuição de conteúdo para usuários em diferentes localidades. |
 
----
-
-## ⚖️ Amazon Lightsail vs. Amazon EC2
+## Amazon Lightsail vs. Amazon EC2
 
 Embora ambos permitam executar servidores virtuais na AWS, o **Lightsail** prioriza simplicidade e facilidade de gerenciamento, enquanto o **EC2 (Elastic Compute Cloud)** oferece maior flexibilidade e controle sobre a infraestrutura.
 
@@ -48,7 +41,7 @@ Embora ambos permitam executar servidores virtuais na AWS, o **Lightsail** prior
 | **Preço** | Planos mensais com valores mais previsíveis | Diferentes modelos de cobrança e componentes de custo |
 | **Casos de uso** | Sites, blogs, pequenas aplicações e projetos com infraestrutura simples | Aplicações corporativas, arquiteturas complexas e workloads com requisitos específicos |
 
-### 💡 Quando utilizar cada um?
+### Quando utilizar cada um?
 
 **Amazon Lightsail**
 
@@ -64,9 +57,7 @@ Embora ambos permitam executar servidores virtuais na AWS, o **Lightsail** prior
 
 > **Importante:** Lightsail não é necessariamente mais barato que EC2 em todos os cenários. A comparação deve considerar os recursos necessários, o padrão de utilização e o custo total da solução.
 
----
-
-## 🖥️ Imagens pré-configuradas: Blueprints vs. AMIs
+## Imagens pré-configuradas: Blueprints vs. AMIs
 
 Tanto o Amazon Lightsail quanto o Amazon EC2 permitem provisionar instâncias a partir de imagens pré-configuradas. A principal diferença está na nomenclatura, no catálogo disponível e nas possibilidades de personalização.
 
@@ -78,7 +69,7 @@ Tanto o Amazon Lightsail quanto o Amazon EC2 permitem provisionar instâncias a 
 | **Personalização** | Seleção de blueprints disponibilizados pelo Lightsail | Possibilidade de criar e utilizar AMIs personalizadas |
 | **Objetivo** | Facilitar a criação rápida de instâncias | Oferecer flexibilidade e padronização no provisionamento |
 
-**💡 Lessons Learned**
+**Aprendizados**
 
 O uso de imagens pré-configuradas não é exclusivo do Lightsail.
 
@@ -86,15 +77,13 @@ No Lightsail, os **Blueprints** simplificam a escolha de sistemas operacionais e
 
 No EC2, as **AMIs (Amazon Machine Images)** oferecem maior flexibilidade, inclusive para criar imagens próprias e reutilizá-las no provisionamento de novas instâncias.
 
----
-
-## 💾 Block Storage e Availability Zones (AZs)
+## Block Storage e Availability Zones (AZs)
 
 Tanto no **Amazon Lightsail** quanto no **Amazon EC2**, os discos adicionais de armazenamento em bloco possuem regras relacionadas às zonas de disponibilidade (*Availability Zones — AZs*).
 
 No EC2, esse armazenamento é fornecido pelo **Amazon EBS (Elastic Block Store)**. No Lightsail, o recurso é apresentado como **Block Storage Disks**.
 
-### 📍 1. Disco e instância devem estar na mesma AZ
+### 1. Disco e instância devem estar na mesma AZ
 
 Um disco adicional precisa estar na **mesma zona de disponibilidade da instância** à qual será anexado.
 
@@ -102,10 +91,10 @@ Isso acontece porque os volumes de armazenamento em bloco são recursos vinculad
 
 | Recurso | Availability Zone | Anexação |
 |---|---|---|
-| Instância A + Disco 1 | us-east-1a | ✅ Permitida |
-| Instância B + Disco 1 | us-east-1b | ❌ Não permitida |
+| Instância A + Disco 1 | us-east-1a | Permitida |
+| Instância B + Disco 1 | us-east-1b | Não permitida |
 
-### 🔄 2. Como utilizar o disco em outra AZ?
+### 2. Como utilizar o disco em outra AZ?
 
 Não é possível simplesmente mover um volume existente para outra zona de disponibilidade.
 
@@ -122,7 +111,7 @@ Uma alternativa é utilizar **snapshots**:
 
 O snapshot permite recriar o armazenamento em outra zona, sem exigir a transferência direta do volume original.
 
-### 🔌 3. Anexar e desanexar discos
+### 3. Anexar e desanexar discos
 
 Discos adicionais podem ser **desanexados de uma instância e anexados a outra**, desde que sejam respeitadas as restrições do serviço e a compatibilidade entre os recursos.
 
@@ -140,7 +129,7 @@ Essa operação permite reutilizar o armazenamento sem necessariamente apagar se
 
 > **Observação:** o Amazon EBS possui funcionalidades específicas, como Multi-Attach em volumes e instâncias compatíveis. Portanto, a regra de uma única instância não é universal para todos os tipos de volume EBS.
 
-### 💰 4. Discos desanexados continuam gerando cobranças
+### 4. Discos desanexados continuam gerando cobranças
 
 A cobrança pelo armazenamento não depende de o disco estar anexado a uma instância.
 
@@ -148,14 +137,14 @@ Um disco adicional provisionado continua gerando custos mesmo quando está desan
 
 | Situação | Gera cobrança pelo disco? |
 |---|---|
-| Disco adicional anexado | ✅ Sim |
-| Disco adicional desanexado | ✅ Sim |
-| Instância desligada, disco existente | ✅ Sim |
-| Disco excluído | ❌ Não há novas cobranças pelo disco excluído |
+| Disco adicional anexado | Sim |
+| Disco adicional desanexado | Sim |
+| Instância desligada, disco existente | Sim |
+| Disco excluído | Não há novas cobranças pelo disco excluído |
 
 Snapshots e outros recursos preservados podem continuar gerando cobranças separadamente.
 
-### 💡 Lessons Learned — Block Storage
+### Aprendizados — Block Storage
 
 - Discos adicionais do Lightsail e volumes EBS são vinculados a uma Availability Zone.
 - Disco e instância precisam estar na mesma AZ para a anexação.
@@ -166,30 +155,26 @@ Snapshots e outros recursos preservados podem continuar gerando cobranças separ
 
 > **Atenção:** discos adicionais e discos raiz não possuem necessariamente o mesmo comportamento de exclusão. No EC2, a remoção automática dos volumes depende de configurações como `DeleteOnTermination`.
 
----
-
-## 🌐 IP estático e custos
+## IP estático e custos
 
 O Amazon Lightsail permite criar **endereços IPv4 estáticos**, que podem ser associados a instâncias para manter um endereço IP público fixo.
 
 Diferentemente de um endereço IP público dinâmico, o IP estático pode ser preservado e associado a outra instância compatível, facilitando a continuidade do acesso à aplicação.
 
-### 💰 Pontos de atenção
+### Pontos de atenção
 
 - Um IP estático **não associado a nenhuma instância** pode gerar cobranças adicionais.
 - A cobrança de endereços IPv4 públicos também deve ser considerada quando estão associados a instâncias, conforme as regras de preços vigentes.
 - Excluir uma instância não significa necessariamente liberar o IP estático reservado.
 - IPs estáticos não utilizados devem ser liberados para evitar custos desnecessários.
 
-### 💡 Lessons Learned — Networking
+### Aprendizados — Networking
 
 Recursos de rede também podem gerar custos independentemente da utilização efetiva.
 
 **Um IP estático reservado, mesmo sem estar associado a uma instância, pode continuar gerando cobranças.**
 
----
-
-## 🌎 Multicloud: AWS vs. Azure vs. Oracle Cloud
+## Multicloud: AWS vs. Azure vs. Oracle Cloud
 
 Não existe uma correspondência exata entre todos os serviços dos provedores de nuvem. Por isso, a comparação abaixo considera **a finalidade e as principais capacidades de cada serviço**, e não apenas seus nomes.
 
@@ -204,16 +189,14 @@ Não existe uma correspondência exata entre todos os serviços dos provedores d
 | **Balanceamento de carga** | Lightsail Load Balancer / ELB | Azure Load Balancer / Application Gateway | OCI Load Balancer |
 | **Snapshots e backups** | Lightsail Snapshots / EBS Snapshots | Azure Disk Snapshots / Azure Backup | OCI Block Volume Backups |
 
-### 🔎 Observações importantes
+### Observações importantes
 
 - **Lightsail não possui um equivalente direto no Azure ou na OCI.** Ele combina recursos que, nesses provedores, normalmente são contratados e configurados separadamente.
 - **Azure Virtual Machines e OCI Compute Instances** são comparáveis principalmente à funcionalidade de máquinas virtuais do Lightsail, mas, em termos de flexibilidade, se aproximam mais do Amazon EC2.
 - **Serviços de containers** podem ter diferenças importantes de execução, escalabilidade, gerenciamento e cobrança.
 - **Snapshots não substituem uma estratégia completa de backup**, que deve considerar retenção, recuperação e proteção contra falhas.
 
----
-
-## 🔐 Responsabilidade compartilhada
+## Responsabilidade compartilhada
 
 O Lightsail simplifica o provisionamento e a administração de recursos, mas **não elimina as responsabilidades de quem utiliza o serviço**.
 
@@ -226,11 +209,9 @@ O Lightsail simplifica o provisionamento e a administração de recursos, mas **
 
 > **Importante:** a divisão de responsabilidades varia conforme o recurso utilizado. Em serviços gerenciados, como bancos de dados, a AWS assume tarefas adicionais de infraestrutura e operação.
 
----
+## Quando escolher (ou não) o Lightsail?
 
-## 🚦 Quando escolher (ou não) o Lightsail?
-
-### ✅ Lightsail pode ser uma boa escolha quando:
+### Lightsail pode ser uma boa escolha quando:
 
 - A aplicação possui requisitos relativamente simples de infraestrutura.
 - É necessário provisionar um ambiente rapidamente.
@@ -238,7 +219,7 @@ O Lightsail simplifica o provisionamento e a administração de recursos, mas **
 - O projeto não exige configurações avançadas de rede e escalabilidade.
 - O objetivo é hospedar sites, aplicações web ou ambientes de aprendizado.
 
-### ⚠️ Considere EC2 ou outros serviços AWS quando:
+### Considere EC2 ou outros serviços AWS quando:
 
 - São necessárias configurações avançadas de VPC e rede.
 - Existem requisitos específicos de CPU, memória, GPU ou tipos de instância.
@@ -248,9 +229,7 @@ O Lightsail simplifica o provisionamento e a administração de recursos, mas **
 
 A escolha deve considerar requisitos funcionais e não funcionais, segurança, disponibilidade, escalabilidade, custos e complexidade operacional.
 
----
-
-## 💡 Lessons Learned
+## Aprendizados
 
 **Entendimento inicial:** Lightsail seria apenas uma máquina virtual simplificada, semelhante a uma instância EC2 com menos opções de configuração.
 
@@ -268,9 +247,7 @@ Outros aprendizados importantes:
 
 **Conceito → Experimentação → Observações → Aprendizado**
 
----
-
-## 📚 Referências
+## Referências
 
 - [Amazon Lightsail — AWS](https://aws.amazon.com/lightsail/)
 - [Amazon Lightsail — Pricing](https://aws.amazon.com/lightsail/pricing/)
